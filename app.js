@@ -85,8 +85,6 @@ function displayQuestion() {
         });
 
         startTimer();
-
-        // Show navigation buttons only if category is selected
         navigation.style.display = selectedCategory ? "block" : "none";
     } else {
         clearInterval(timerInterval);
@@ -173,6 +171,19 @@ function startTimer() {
     }, 1000);
 }
 
+// Show the correct answer
+function showCorrectAnswer() {
+    const correctAnswer = questions[currentQuestionIndex].correct_answer;
+    const choicesButtons = document.querySelectorAll('#choices button');
+
+    choicesButtons.forEach(button => {
+        if (button.innerText === correctAnswer) {
+            button.style.backgroundColor = 'green'; // Highlight correct answer in green
+            button.style.color = 'white'; // Change text color to white for visibility
+        }
+    });
+}
+
 // Event listeners
 document.getElementById("next-button").addEventListener("click", () => {
     currentQuestionIndex++;
@@ -195,6 +206,9 @@ document.getElementById("category").addEventListener("change", (event) => {
     selectedCategory = event.target.value;
     fetchQuestions();
 });
+
+// Add event listener for the show answer button
+document.getElementById("show-answer").addEventListener("click", showCorrectAnswer);
 
 document.getElementById("retry-button").addEventListener("click", () => {
     fetchQuestions();
